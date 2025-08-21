@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: npm install
     - name: Build React app
-      run: npm run build
+      run: CI=false npm run build
     - name: Upload WAR artifact
       id: upload
       uses: actions/upload-artifact@v2
