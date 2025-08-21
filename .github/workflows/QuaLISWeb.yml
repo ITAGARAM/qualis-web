@@ -2,10 +2,15 @@ name: Build React App
 on:
   push:
     branches:
+      - feature/**
+      - develop
+      - release
       - main
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
+    outputs:
+      war_path: ${{ steps.upload.outputs.artifact-path }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -23,3 +28,89 @@ jobs:
       with:
         name: QuaLISWeb
         path: ./build
+        
+  deploy-dev:
+    needs: build
+    if: startsWith(github.ref, 'refs/heads/feature/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: QuaLISWeb
+ 
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+ 
+      - name: Deploy to DEV EC2
+        run: |
+          echo "Deploying to DEV EC2..."
+          # sshpass -p "${{ secrets.DEV_EC2_PASSWORD }}" \
+          #   scp -o StrictHostKeyChecking=no *.zip \
+          #   ${{ secrets.DEV_EC2_USER }}@${{ secrets.DEV_EC2_HOST }}:/tmp/
+ 
+  deploy-test:
+    needs: build
+    if: github.ref == 'refs/heads/develop'
+    environment:
+      name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: QuaLISWeb
+ 
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+ 
+      - name: Deploy to TEST EC2
+        run: |
+          echo "Deploying to TEST EC2..."
+          # sshpass -p "${{ secrets.TEST_EC2_PASSWORD }}" \
+          #   scp -o StrictHostKeyChecking=no *.zip \
+          #   ${{ secrets.TEST_EC2_USER }}@${{ secrets.TEST_EC2_HOST }}:/tmp/
+ 
+  deploy-stage:
+    needs: build
+    if: startsWith(github.ref, 'refs/heads/develop')
+    runs-on: ubuntu-latest
+    environment:
+      name: stage
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: QuaLISWeb
+ 
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+ 
+      - name: Deploy to STAGE EC2
+        run: |
+          echo "Deploying to STAGE EC2..."
+          # sshpass -p "${{ secrets.STAGE_EC2_PASSWORD }}" \
+          #   scp -o StrictHostKeyChecking=no *.zip \
+          #   ${{ secrets.STAGE_EC2_USER }}@${{ secrets.STAGE_EC2_HOST }}:/tmp/
+ 
+  deploy-prod:
+    needs: build
+    if: github.ref == 'refs/heads/release'
+    runs-on: ubuntu-latest
+    environment:
+      name: prod 
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: QuaLISWeb
+ 
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+ 
+      - name: Deploy to PROD EC2
+        run: |
+          echo "Deploying to PROD EC2..."
+          # sshpass -p "${{ secrets.PROD_EC2_PASSWORD }}" \
+          #   scp -o StrictHostKeyChecking=no *.zip \
+          #   ${{ secrets.PROD_EC2_USER }}@${{ secrets.PROD_EC2_HOST }}:/tmp/
