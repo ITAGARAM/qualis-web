@@ -1,4 +1,4 @@
-name: Build React App
+name: Generate the build files of a React App
 on:
   push:
     branches:
