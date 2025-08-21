@@ -13,6 +13,8 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '16.8'
+    - name: Give executable rights to react-scripts (if needed)
+      run: chmod +x node_modules/.bin/react-scripts || true
     - name: Build React app
       run: npm run build
     - name: Upload WAR artifact
