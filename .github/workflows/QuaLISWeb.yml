@@ -37,11 +37,9 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
-          name: QuaLISWeb
- 
+          name: QuaLISWeb 
       - name: Install sshpass
-        run: sudo apt-get update && sudo apt-get install -y sshpass
- 
+        run: sudo apt-get update && sudo apt-get install -y sshpass 
       - name: Deploy to DEV EC2
         run: |
           echo "Deploying to DEV EC2..."
@@ -59,11 +57,9 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
-          name: QuaLISWeb
- 
+          name: QuaLISWeb 
       - name: Install sshpass
-        run: sudo apt-get update && sudo apt-get install -y sshpass
- 
+        run: sudo apt-get update && sudo apt-get install -y sshpass 
       - name: Deploy to TEST EC2
         run: |
           echo "Deploying to TEST EC2..."
@@ -81,11 +77,9 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
-          name: QuaLISWeb
- 
+          name: QuaLISWeb 
       - name: Install sshpass
-        run: sudo apt-get update && sudo apt-get install -y sshpass
- 
+        run: sudo apt-get update && sudo apt-get install -y sshpass 
       - name: Deploy to STAGE EC2
         run: |
           echo "Deploying to STAGE EC2..."
@@ -103,11 +97,9 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
-          name: QuaLISWeb
- 
+          name: QuaLISWeb 
       - name: Install sshpass
-        run: sudo apt-get update && sudo apt-get install -y sshpass
- 
+        run: sudo apt-get update && sudo apt-get install -y sshpass 
       - name: Deploy to PROD EC2
         run: |
           echo "Deploying to PROD EC2..."
