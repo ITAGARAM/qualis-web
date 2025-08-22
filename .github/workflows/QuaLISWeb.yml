@@ -1,4 +1,4 @@
-name: Build React App
+name: Front-end code build generation and deployment on various environment
 on:
   push:
     branches:
