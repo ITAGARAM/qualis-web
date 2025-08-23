@@ -43,6 +43,9 @@ jobs:
       - name: Deploy to DEV EC2
         run: |
           echo "Deploying to DEV EC2..."
+          unzip QuaLISWeb.zip .
+          pwd
+          ls -lR
           # sshpass -p "${{ secrets.DEV_EC2_PASSWORD }}" \
           #   scp -o StrictHostKeyChecking=no *.zip \
           #   ${{ secrets.DEV_EC2_USER }}@${{ secrets.DEV_EC2_HOST }}:/tmp/
